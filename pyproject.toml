@@ -11,7 +11,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [project]
-name = "secure-string"
+name = "secure-strings"
 version = "1.0.0"
 description = "Protects passwords from accidentally getting into logs"
 readme = "README.md"
