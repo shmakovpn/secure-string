@@ -5,7 +5,7 @@
 ![Mypy](https://github.com/shmakovpn/secure-string/actions/workflows/mypy.yml/badge.svg)
 [![pypi](https://img.shields.io/pypi/v/secure-strings.svg)](https://pypi.python.org/pypi/secure-strings)
 [![downloads](https://static.pepy.tech/badge/secure-strings/month)](https://pepy.tech/project/secure-strings)
-[![versions](https://img.shields.io/pypi/pyversions/secure-string.svg)](https://github.com/shmakovpn/secure-string)
+[![versions](https://img.shields.io/pypi/pyversions/secure-strings.svg)](https://github.com/shmakovpn/secure-string)
 
 Protects passwords from accidentally getting into logs
 
