@@ -1,3 +1,4 @@
+import dataclasses
 import pytest
 import pickle
 import copy
@@ -48,12 +49,35 @@ class TestSecureString:
         with pytest.raises(tm.SecureStringDoesNotSupportError):
             assert tm.SecureString('hello') == 'hello'
 
+        with pytest.raises(tm.SecureStringDoesNotSupportError):
+            assert tm.SecureString('hello') == tm.SecureString('hello')
+
         with tm.SecureStringContextManager(False):
             assert tm.SecureString('hello') == 'hello'
+            assert not tm.SecureString('hello') == 'foo'
+
+        with tm.SecureStringContextManager(False):
+            assert tm.SecureString('hello') == tm.SecureString('hello')
+            assert not tm.SecureString('hello') == tm.SecureString('foo')
 
         with SecureStringStrictContextManager(True):
             with pytest.raises(SecureStringStrictError):
                 _r = tm.SecureString('hello') == 'hello'
+
+        with SecureStringStrictContextManager(True):
+            with pytest.raises(SecureStringStrictError):
+                _r = tm.SecureString('hello') == tm.SecureString('hello')
+
+        @dataclasses.dataclass(frozen=True)
+        class D:
+            x: tm.SecureString
+            y: tm.SecureString
+
+        xy = D(tm.SecureString('hello'), tm.SecureString('foo'))
+        yx = D(tm.SecureString('hello'), tm.SecureString('foo'))
+
+        with tm.SecureStringContextManager(False):
+            assert xy == yx
 
     def test__format(self):
         assert tm.SecureString('hello').__format__('') == tm.SecureString._fake_value.__format__('')
@@ -189,14 +213,26 @@ class TestSecureString:
 
     def test__ne(self):
         with pytest.raises(tm.SecureStringDoesNotSupportError):
-            assert tm.SecureString('hello') != 'hello'
+            assert tm.SecureString('hello') != 'foo'
+
+        with pytest.raises(tm.SecureStringDoesNotSupportError):
+            assert tm.SecureString('hello') != tm.SecureString('foo')
 
         with tm.SecureStringContextManager(False):
             assert tm.SecureString('hello') != 'foo'
+            assert not tm.SecureString('hello') != tm.SecureString('hello')
+
+        with tm.SecureStringContextManager(False):
+            assert tm.SecureString('hello') != tm.SecureString('foo')
+            assert not tm.SecureString('hello') != tm.SecureString('hello')
 
         with SecureStringStrictContextManager(True):
             with pytest.raises(SecureStringStrictError):
                 _r = tm.SecureString('hello') != 'foo'
+
+        with SecureStringStrictContextManager(True):
+            with pytest.raises(SecureStringStrictError):
+                _r = tm.SecureString('hello') != tm.SecureString('foo')
 
     def test__radd(self):
         assert 'say ' + tm.SecureString('hello') == 'say ' + tm.SecureString._fake_value
