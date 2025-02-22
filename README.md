@@ -22,8 +22,8 @@ from secure_string import SecureString, SecureStringContextManager, SecureString
 
 
 password = SecureString('my password')
-print(password)  # this will prints '***' to stdout
-print(password.value)  # this will prints 'my password', use the `value` property to get real value
+print(password)  # this will print '***' to stdout
+print(password.value)  # this will print 'my password', use the `value` property to get real value
 
 # we can disable string protection
 with SecureStringContextManager(False):

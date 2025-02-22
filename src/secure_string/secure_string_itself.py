@@ -48,7 +48,13 @@ class SecureStringBehaviourDecorator:
                 return getattr(self_._fake_value, func.__name__)(*args[1:], **kwargs)
             else:
                 # noinspection PyProtectedMember
-                return getattr(self_._orig_value, func.__name__)(*args[1:], **kwargs)
+                right_args = [(str(a) if isinstance(a, SecureString) else a) for a in args[1:]]
+                right_kwargs = {
+                    (str(k) if isinstance(k, SecureString) else k): (str(v) if isinstance(v, SecureString) else v)
+                    for k, v in kwargs.items()
+                }
+                # noinspection PyProtectedMember
+                return getattr(self_._orig_value, func.__name__)(*right_args, **right_kwargs)
 
         return wrapper
 
