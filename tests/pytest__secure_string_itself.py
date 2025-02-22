@@ -1,3 +1,4 @@
+import dataclasses
 import pytest
 import pickle
 import copy
@@ -66,6 +67,17 @@ class TestSecureString:
         with SecureStringStrictContextManager(True):
             with pytest.raises(SecureStringStrictError):
                 _r = tm.SecureString('hello') == tm.SecureString('hello')
+
+        @dataclasses.dataclass(frozen=True)
+        class D:
+            x: tm.SecureString
+            y: tm.SecureString
+
+        xy = D(tm.SecureString('hello'), tm.SecureString('foo'))
+        yx = D(tm.SecureString('hello'), tm.SecureString('foo'))
+
+        with tm.SecureStringContextManager(False):
+            assert xy == yx
 
     def test__format(self):
         assert tm.SecureString('hello').__format__('') == tm.SecureString._fake_value.__format__('')
