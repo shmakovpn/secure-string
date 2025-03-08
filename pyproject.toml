@@ -12,7 +12,7 @@ where = ["src"]
 
 [project]
 name = "secure-strings"
-version = "1.0.3"
+version = "1.0.4"
 description = "Protects passwords from accidentally getting into logs"
 readme = "README.md"
 authors = [{ name = "Pavel Shmakov", email = "shmakovpn@yandex.ru" }]
